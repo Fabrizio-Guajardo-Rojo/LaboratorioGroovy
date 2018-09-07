@@ -1,8 +1,8 @@
 class Empleado{
+
     float sueldoBasico(){
     return this.montoBasico() - this.aportes()
     }
-
 
     float montoBasico(){
     return 7000
@@ -15,8 +15,8 @@ class Empleado{
 }
 
 class EmpleadoJerarquico extends Empleado{
-    
-    
+
+
    float calcularSueldo(){
     return super.sueldoBasico() + this.bonoPorCategoria()
    }
@@ -28,12 +28,12 @@ class EmpleadoJerarquico extends Empleado{
    float bonoPorCategoria(){
     return 2000
    }
-   
+
 }
 
 class  Gerente extends EmpleadoJerarquico {
-    
-    
+
+
     float aportes(){
     return this.montoBasico() * 0.05
     }
@@ -41,7 +41,7 @@ class  Gerente extends EmpleadoJerarquico {
     float montoBasico(){
     return 10000
     }
-}  
+}
 
 def gerente = new Gerente()
 
