@@ -20,19 +20,15 @@ class Estudiante{
 
 class Curso{
 
-    ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
-    
+    List estudiantes = []
 
     //Metodos
     
     //Pone en cero las calificaciones de todos los estudiantes.
     void resetearNotas(){
-        int i;
-        for(i=0; i < estudiantes.size(); i++){
-            estudiantes[i].setCalificacion(0);
-        }
+        this.estudiantes.each{it.calificacion=0}
     }
-    
+        
     //Agrega unEstudiante al curso
     void agregarEstudiante(unEstudiante){
         estudiantes.add(unEstudiante);
@@ -40,88 +36,51 @@ class Curso{
 
     //Retorna la cantidad de alumnos que se inscribieron al curso
     void cantidadDeEstudiantesInscriptos(){
-        int i;
+        def i;
         i=estudiantes.size()
         println "La cantidad de estudiantes inscriptos es: ${i}"
     }
 
-    //#estudiantes(): Retorna la colección de estudiantes del curso
-    void estudiantes(){
-    int j;
-    println "ESTUDIANTES DEL CURSO:"
-    for(j=0; j<estudiantes.size(); j++)
-        println "Nombre: ${estudiantes[j].nombre} - DNI: ${estudiantes[j].dni} - Edad: ${estudiantes[j].edad} - Ciudad Natal: ${estudiantes[j].ciudadNatal} - Calificacion: ${estudiantes[j].calificacion}"
+    //Retorna la colección de estudiantes del curso
+    List estudiantes(){
+        return this.estudiantes
     }
-    
-    
+
     //Retorna una colección con todos los estudiantes que aprobaron el curso(calificación superior a 4)
-    void estudiantesAprobados(){
-        int j;
-        println "ESTUDIANTES APROBADOS CON NOTA MAYOR A 4:"
-        for(j=0; j<estudiantes.size(); j++){
-            if(estudiantes[j].calificacion > 4){
-                println "Nombre: ${estudiantes[j].nombre} - DNI: ${estudiantes[j].dni} - Edad: ${estudiantes[j].edad} - Ciudad Natal: ${estudiantes[j].ciudadNatal} - Calificacion: ${estudiantes[j].calificacion}"
-            }
-        }
+    List estudiantesAprobados(){
+        return this.estudiantes.findAll{it.calificacion>4}
     }
-
-
+    
     //Indica si “unEstudiante” se encuentra inscripto en el curso
-    void existeEstudiante(int dni){
-        int k,j=0;
-        for(k=0; k<estudiantes.size(); k++){
-            if(dni == estudiantes[k].dni){
-                println "EL ALUMNO CON DNI: ${dni} se encuentra inscripto en el curso"
-                j=1
-                break;
-            }
-        }
-        if(j==0)
-            println "EL ALUMNO CON DNI: ${dni} NO se encuentra inscripto en el curso"
+    Boolean existeEstudiante(unEstudiante){
+        return this.estudiantes.any{it.dni==unEstudiante.dni}
     }
-
 
     //Determina si algún alumno obtuvo la calificación 10
-    void existeEstudianteConNotaDiez(){
-        println "ALUMNOS CON NOTA IGUAL A DIEZ: "
-        int k;
-        for(k=0; k<estudiantes.size(); k++){
-            if(estudiantes[k].calificacion==10){
-                println ("Nombre: ${estudiantes[k].nombre} - DNI: ${estudiantes[k].dni}");
-            }
-        }
+    Boolean existeEstudianteConNotaDiez(){
+        return this.estudiantes.any{it.calificacion==10}
     }
 
     //Indica si el estudiante llamado “unNombre” se encuentra inscripto en el curso
-    void existeEstudianteLlamado(String nombre){
-        int k,j=0;
-        for(k=0; k<estudiantes.size(); k++){
-            if(nombre == estudiantes[k].nombre){
-                println "EL ALUMNO CON EL NOMBRE: ${nombre} se encuentra inscripto en el curso"
-                j=1
-                break;
-            }
-        }
-        if(j==0)
-            println "EL ALUMNO CON EL NOMBRE: ${nombre} NO se encuentra inscripto en el curso"
+    Boolean existeEstudianteLlamado(unNombre){
+        return this.estudiantes.any{it.nombre.equals(unNombre)}
     }
 
     //Retorna en porcentaje de estudiantes aprobados
-    void porcentajeDeAprobados(){
-        int j,cantAprobados=0,porcentaje;
+    def porcentajeDeAprobados(){
+        def j,cantAprobados=0,porcentaje;
         for(j=0; j<estudiantes.size(); j++){
             if(estudiantes[j].calificacion > 4){
                 cantAprobados++
             }
         }
         porcentaje=(cantAprobados*100)/estudiantes.size()
-        println"EL PORCENTAJE DE ALUMNOS APROBADOS ES: ${porcentaje}%"
+        return porcentaje
     }
-    
     
     //Calcula el promedio de las calificaciones obtenidas por los alumnos
     void promedioDeCalificaciones(){
-        int j,notaTotal=0
+        def j,notaTotal=0
         for(j=0; j<estudiantes.size(); j++){
            notaTotal=notaTotal+(estudiantes[j].calificacion) 
         }
@@ -129,26 +88,55 @@ class Curso{
     }
     
     //Retorna una colección con todos los estudiantes que no nacieron en Catamarca
+    //List estudiantesNoCatamarquenios(){
+    //    return this.estudiantes.findAll{it.ciudadNatal.equals(aString)}
+    //}
     void estudiantesNoCatamarquenios(){
-        int j
-        String ciudad="CATAMARCA"
+        def j
+        def ciudad="CATAMARCA"
         for(j=0; j<estudiantes.size(); j++){
             if(estudiantes[j].ciudadNatal.toUpperCase() != ciudad){
                 println"EL ALUMNO: ${estudiantes[j].nombre} ,NO NACIO EN CATAMARCA"
             }
         }
     }    
-     
-     
-    //#calificacionMasFrecuente(): Retorna la calificación más frecuente del curso
-    
-    //#ciudadesExceptoCatamarca(): Retorna una colección, sin repeticiones, conteniendo los nombres de todas las 
-    //ciudades (excepto Catamarca) donde nacieron los alumnos inscriptos al curso
-    
-    //frecuenciaDeEdades(): Retorna un mapa que asocia las edades de los estudiantes con la frecuencia en la que aparecen. 
-    //Esta información luego será utilizada para generar un histograma (ver Figura 3) cuyo eje x serán las edades y 
-    //cuyo eje y serán la frecuencia de las ocurrencias
-    
+       
+	//Retorna la calificación más frecuente del curso
+	def calificacionMasFrecuente() {
+    	List notas=[]
+
+    	notas= this.estudiantes.calificacion
+
+    	def i;
+    	def j=0 
+      
+    	List contador = []
+    	for (i=0; i < 20 ;i++){
+        	contador[i]=0
+    	}
+
+    	for (j=0; j < notas.size();j++){
+        	for (i=0; i < notas.size();i++){
+            	if (notas[j] == notas[i]){
+             		contador[j]=contador[j] + 1
+            	}
+        	}
+    	}
+
+    	int iNumeroMayor, iPosicion;
+ 
+		//Suponemos que el numero mayor es el primero
+    	iNumeroMayor = contador[0];
+    	iPosicion = 0;
+    	for (i=1;i <contador.size();i++){
+        	if (contador[i]>iNumeroMayor){
+           		iNumeroMayor = contador[i];
+           		iPosicion = i;
+        	} 
+    	}
+    	
+    	return estudiantes[iPosicion].calificacion
+	}
     
     //Retorna verdadero si todos los estudiantes desaprobaron el curso
     boolean unDesastre(){
@@ -161,38 +149,46 @@ class Curso{
         if(desaprobados==estudiantes.size()){return true}
         else{return false}
     }
-   
-   
-   
-}
+} 
 
- def curso = new Curso();
 
+def curso = new Curso();
+
+//Agrega estudiantes
 curso.agregarEstudiante(new Estudiante("fabri",39424149,24,"Catamarca",10))
 curso.agregarEstudiante(new Estudiante("facu",37654210,23,"Catamarca",3))
-curso.agregarEstudiante(new Estudiante("matias",38634290,23,"Tucuman",6))
+curso.agregarEstudiante(new Estudiante("matias",38634290,23,"Tucuman",10))
 curso.agregarEstudiante(new Estudiante("daniel",39805908,21,"Catamarca",7))
 
+//resetea la nota de todos los estudiantes a cero
+curso.resetearNotas()
 
+//muestra una lista de los nombres de los aprobados
+println curso.estudiantesAprobados().nombre
+
+//muestra true si existe un estudiante con ese nombre
+println curso.existeEstudianteLlamado("daniel")
+
+//muestra la cantidad de estudiantes inscriptos en el curso
 curso.cantidadDeEstudiantesInscriptos()
 
-curso.estudiantes()
+//muestra una lista con los nombres de los estudiantes del curso
+println curso.estudiantes().nombre
 
-curso.estudiantesAprobados()
+//muestra true si existe el alumno que le enviamos
+def alumno = new Estudiante("daniel",39805908,21,"Catamarca",7)
+println curso.existeEstudiante(alumno)
 
-curso.existeEstudiante(37654210)
-curso.existeEstudiante(37616110)
+//muestra true si existe algun estudiante con nota igual a 10
+println curso.existeEstudianteConNotaDiez()
 
-curso.existeEstudianteLlamado("fabri")
-curso.existeEstudianteLlamado("lucas")
-
-curso.existeEstudianteConNotaDiez();
-
-curso.porcentajeDeAprobados()
-
+//muestra el porcentaje de estudiantes aprobados
+println"EL PORCENTAJE DE ALUMNOS APROBADOS ES: ${curso.porcentajeDeAprobados()}%"
+//muestra el promedio de las calificaciones
 curso.promedioDeCalificaciones()
 
+// muestra estudiantes no catamarqueños REVISAR
 curso.estudiantesNoCatamarquenios()
 
-if(true==curso.unDesastre())
-    println "TODOS LOS ALUMNOS ESTAN DESAPROBADOS"
+//MUESTRA la calificacion mas frecuente 
+println "LA CALIFICACION MAS FRECUENTE ES: ${curso.calificacionMasFrecuente()}"
