@@ -161,7 +161,7 @@ curso.agregarEstudiante(new Estudiante("matias",38634290,23,"Tucuman",10))
 curso.agregarEstudiante(new Estudiante("daniel",39805908,21,"Catamarca",7))
 
 //resetea la nota de todos los estudiantes a cero
-curso.resetearNotas()
+//curso.resetearNotas()
 
 //muestra una lista de los nombres de los aprobados
 println curso.estudiantesAprobados().nombre
@@ -192,3 +192,5 @@ curso.estudiantesNoCatamarquenios()
 
 //MUESTRA la calificacion mas frecuente 
 println "LA CALIFICACION MAS FRECUENTE ES: ${curso.calificacionMasFrecuente()}"
+// Muestra un verdadero si todos los alumnos estan desaprobados 
+println curso.unDesastre()
